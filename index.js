@@ -8,3 +8,5 @@ var book = new GoogleBook();
 const service = new GoogleBookService();
 service.fetchBooks("Cats");
 setTimeout(function(){ console.log(service.fetchedResults); }, 1000);
+
+module.exports = {GoogleBookService, GoogleBook};
