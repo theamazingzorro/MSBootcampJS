@@ -38,13 +38,14 @@ describe("Player", function() {
   });
 
   // demonstrates use of spies to intercept and test method calls
-  it("tells the current song if the user has made it a favorite", function() {
-    spyOn(song, 'persistFavoriteStatus');
+  it("tells the current song if the user has made it a favorite and sets the value on the Song object's isFavorite field", function() {
+    spyOn(song, 'persistFavoriteStatus').and.callThrough();
 
     player.play(song);
     player.makeFavorite();
 
     expect(song.persistFavoriteStatus).toHaveBeenCalledWith(true);
+    expect(song.isFavorite).toBeTruthy();
   });
 
   //demonstrates use of expected exceptions
