@@ -1,2 +1,4 @@
-var Player = require('../../lib/jasmine_examples/Player');
-var Song = require('../../lib/jasmine_examples/Song');
+var GoogleBook = require('./GoogleBook.js');
+
+var book = new GoogleBook();
+book.googleBookItemMapper();
