@@ -5,8 +5,8 @@ var GoogleBookService = require ('./dist/GoogleBookService.js').GoogleBookServic
 
 var book = new GoogleBook();
 
-const service = new GoogleBookService();
-service.fetchBooks("Cats");
-setTimeout(function(){ console.log(service.fetchedResults); }, 1000);
+//const service = new GoogleBookService();
+//service.fetchBooks("Cats");
+//setTimeout(function(){ console.log(service.fetchedResults); }, 1000);
 
 module.exports = {GoogleBookService, GoogleBook};

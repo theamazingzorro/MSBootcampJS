@@ -18,9 +18,9 @@
             </div>
         </form>
         <div id="navigation">
-            <button id="previous"> Previous </button>
-            <button id="next"> Next </button>
-            <span>Page: <select id="pageNumber"></select></span>
+            <button id="previous" onclick="previousBook()"> Previous </button>
+            <button id="next" onclick="nextBook()"> Next </button>
+            <span>Page: <select id="pageNumber" onchange="pageChanged()"></select></span>
         </div>
         <div id="searchResults" style="margin-top: 20px;">
             <img id="myThumbNail" src="" width="150px" style="float: left; margin-right: 10px;"></img>
@@ -35,11 +35,89 @@
             </span>
         </div>
     </div>
+
     <script type="text/javascript">
         
         const bookService = new myModule.GoogleBookService();
         let book = new myModule.GoogleBook();
-     
+        var currentPage = 0;
+
+
+        let get = (parameterName) => {
+            var result = null,
+            tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+        let changeTheBook = (number, bookService) => {
+            currentPage = number;
+            
+            let pgNbrSelect = document.getElementById("pageNumber");
+            pgNbrSelect.selectedIndex = number;
+
+
+            book.googleBookItemMapper(bookService.fetchedResults.items[number]);
+
+            document.getElementById("title").innerText = book.title;
+            document.getElementById("description").innerText = book.description;
+            document.getElementById("year").innerText = book.publishedDate;
+            
+            document.getElementById("myThumbNail").setAttribute("src", book.thumbnail);
+
+            let authors = document.getElementById("authors");
+            authors.innerText = "";
+            let delim = "";
+            for(let i = 0; i < book.author.length; i++) {
+                authors.innerText += delim + book.author[i];
+                delim = ", ";
+            }
+        }
+
+        let nextBook = () => {
+            if(currentPage < bookService.fetchedResults.items.length - 1) {
+                currentPage++;
+                changeTheBook(currentPage, bookService);
+            }
+        }
+
+        let previousBook = () => {
+            if(currentPage > 0) {
+                currentPage--;
+                changeTheBook(currentPage, bookService);      
+            }
+        }
+
+        let pageChanged = () => {
+            let pgNbrSelect = document.getElementById("pageNumber");
+            currentPage = pgNbrSelect.selectedIndex;
+
+            changeTheBook(currentPage, bookService);
+        }
+
+
+        bookService.fetchBooks(get("query")).then( (done) => {
+            let pgNbrSelect = document.getElementById("pageNumber");
+            const max = bookService.fetchedResults.items.length - 1;
+            for (let i = 0; i <= max; i++) {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.id = "pageNumberOption_"+i;
+                opt.innerHTML = i+1;
+                pgNbrSelect.appendChild(opt);
+            }
+            
+            changeTheBook(0, bookService);
+        });
+        
+
+
     </script>
 </body>
 
