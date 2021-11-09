@@ -5,11 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "npx jasmine",
-    "main": "node index.js"
+    "transpile": "npx babel ./*.mjs ./spec/google_books/*.mjs --out-dir dist --source-maps inline --ignore *.js",
+    "start": "npm run transpile && node index.js"
   },
   "author": "Fox",
   "license": "ISC",
   "dependencies": {
-    "jasmine": "^3.10.0"
+    "jasmine": "^3.10.0",
+    "regenerator-runtime": "^0.13.9",
+    "axios": "^0.24.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/preset-env": "^7.16.0"
   }
 }
